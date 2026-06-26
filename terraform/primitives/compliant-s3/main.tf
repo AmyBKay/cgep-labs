@@ -1,4 +1,4 @@
-# main.tf
+# terraform/main.tf
 terraform {
   required_version = ">= 1.6"
   required_providers {
@@ -9,108 +9,78 @@ terraform {
 
 provider "aws" {
   region = "us-east-1"
-
-  # CM-6: Configuration settings, required compliance tags applied to every
-  # taggable resource by default. Removes the chance of forgetting them.
   default_tags {
     tags = {
       Project         = var.project_name
-      Environment     = var.environment
+      Environment     = "evidence"
       ManagedBy       = "terraform"
       ComplianceScope = "cge-p-lab"
     }
   }
 }
 
-resource "random_id" "bucket_suffix" {
-  byte_length = 4
-}
+resource "random_id" "suffix" { byte_length = 4 }
 
 locals {
-  effective_suffix = var.bucket_suffix != "" ? var.bucket_suffix : random_id.bucket_suffix.hex
-  primary_name     = "${var.project_name}-${var.environment}-data-${local.effective_suffix}"
-  log_name         = "${var.project_name}-${var.environment}-logs-${local.effective_suffix}"
+  vault_name = "${var.project_name}-grc-evidence-vault-${random_id.suffix.hex}"
 }
 
-resource "aws_s3_bucket" "primary" {
-  bucket = local.primary_name
+resource "aws_s3_bucket" "vault" {
+  bucket              = local.vault_name
+  object_lock_enabled = true        # MUST be set at bucket creation
 }
-# main.tf (continued)
 
-# SC-28: Protection of information at rest.
-# AES-256 keeps this lab simple. The commented block below shows how you'd
-# switch to KMS-managed keys, covered in a later lab.
-resource "aws_s3_bucket_server_side_encryption_configuration" "primary" {
-  bucket = aws_s3_bucket.primary.id
+resource "aws_s3_bucket_versioning" "vault" {
+  bucket = aws_s3_bucket.vault.id
+  versioning_configuration { status = "Enabled" }   # Object Lock requires versioning
+}
+
+resource "aws_s3_bucket_object_lock_configuration" "vault" {
+  bucket = aws_s3_bucket.vault.id
+
   rule {
-    apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
+    default_retention {
+      mode = var.lock_mode           # GOVERNANCE for labs, COMPLIANCE for production
+      days = var.retention_days
     }
   }
 
-  # KMS teaser:
-  # rule {
-  #   apply_server_side_encryption_by_default {
-  #     sse_algorithm     = "aws:kms"
-  #     kms_master_key_id = aws_kms_key.bucket.arn
-  #   }
-  #   bucket_key_enabled = true
-  # }
+  depends_on = [aws_s3_bucket_versioning.vault]
 }
 
-# CM-6: Versioning preserves prior object states for recovery and audit.
-resource "aws_s3_bucket_versioning" "primary" {
-  bucket = aws_s3_bucket.primary.id
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
-
-# AC-3: Access control, explicit deny on every public access vector.
-resource "aws_s3_bucket_public_access_block" "primary" {
-  bucket                  = aws_s3_bucket.primary.id
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-}
-# main.tf (continued)
-
-# AU-3 / AU-6: Content of audit records + audit review.
-resource "aws_s3_bucket" "log" {
-  bucket = local.log_name
-}
-
-resource "aws_s3_bucket_ownership_controls" "log" {
-  bucket = aws_s3_bucket.log.id
-  rule {
-    object_ownership = "BucketOwnerPreferred"
-  }
-}
-
-resource "aws_s3_bucket_acl" "log" {
-  depends_on = [aws_s3_bucket_ownership_controls.log]
-  bucket     = aws_s3_bucket.log.id
-  acl        = "log-delivery-write"
-}
-
-resource "aws_s3_bucket_server_side_encryption_configuration" "log" {
-  bucket = aws_s3_bucket.log.id
+resource "aws_s3_bucket_server_side_encryption_configuration" "vault" {
+  bucket = aws_s3_bucket.vault.id
   rule {
     apply_server_side_encryption_by_default { sse_algorithm = "AES256" }
   }
 }
 
-resource "aws_s3_bucket_public_access_block" "log" {
-  bucket                  = aws_s3_bucket.log.id
+resource "aws_s3_bucket_public_access_block" "vault" {
+  bucket                  = aws_s3_bucket.vault.id
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
 
-resource "aws_s3_bucket_logging" "primary" {
-  bucket        = aws_s3_bucket.primary.id
-  target_bucket = aws_s3_bucket.log.id
-  target_prefix = "access-logs/"
+# Refuse bucket deletion from anyone except the account root.
+data "aws_caller_identity" "current" {}
+
+resource "aws_s3_bucket_policy" "vault" {
+  bucket = aws_s3_bucket.vault.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Sid       = "DenyBucketDeletion"
+      Effect    = "Deny"
+      Principal = "*"
+      Action    = "s3:DeleteBucket"
+      Resource  = aws_s3_bucket.vault.arn
+      Condition = {
+        StringNotEquals = {
+          "aws:PrincipalArn" = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+      }
+    }]
+  })
 }

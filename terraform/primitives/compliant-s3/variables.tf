@@ -22,3 +22,14 @@ variable "bucket_suffix" {
   description = "Optional suffix to force a specific bucket name. Defaults to a random_id."
   default     = ""
 }
+variable "lock_mode" {
+  description = "Object lock mode. GOVERNANCE for labs, COMPLIANCE for production."
+  type        = string
+  default     = "GOVERNANCE"
+}
+
+variable "retention_days" {
+  description = "Number of days to retain objects."
+  type        = number
+  default     = 30
+}
