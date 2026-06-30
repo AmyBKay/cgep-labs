@@ -59,6 +59,17 @@ resource "aws_s3_bucket_public_access_block" "vault" {
 # Refuse bucket deletion from anyone except the account root.
 data "aws_caller_identity" "current" {}
 
+resource "aws_kms_key" "vault" {
+  description             = "CMK for GRC evidence vault encryption (SC-28)"
+  deletion_window_in_days = 7
+  enable_key_rotation     = true
+}
+
+resource "aws_kms_alias" "vault" {
+  name          = "alias/${local.vault_name}-key"
+  target_key_id = aws_kms_key.vault.id
+}
+
 resource "aws_s3_bucket_policy" "vault" {
   bucket = aws_s3_bucket.vault.id
   policy = jsonencode({
@@ -81,6 +92,10 @@ resource "aws_s3_bucket_policy" "vault" {
 resource "aws_s3_bucket_server_side_encryption_configuration" "vault" {
   bucket = aws_s3_bucket.vault.id
   rule {
-    apply_server_side_encryption_by_default { sse_algorithm = "AES256" }
+    apply_server_side_encryption_by_default {
+      sse_algorithm     = "aws:kms"
+      kms_master_key_id = aws_kms_key.vault.arn
+    }
+    bucket_key_enabled = true
   }
 }
