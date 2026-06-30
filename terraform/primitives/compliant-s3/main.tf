@@ -48,12 +48,6 @@ resource "aws_s3_bucket_object_lock_configuration" "vault" {
   depends_on = [aws_s3_bucket_versioning.vault]
 }
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "vault" {
-  bucket = aws_s3_bucket.vault.id
-  rule {
-    apply_server_side_encryption_by_default { sse_algorithm = "AES256" }
-  }
-}
 
 resource "aws_s3_bucket_public_access_block" "vault" {
   bucket                  = aws_s3_bucket.vault.id
