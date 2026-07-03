@@ -1,0 +1,10 @@
+ERROR: (gcloud.scc.findings.list) PERMISSION_DENIED: Permission 'securitycenter.findings.list' denied on resource '//securitycenter.googleapis.com/organizations/61099233299/sources/-' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter;errorId=CiQwMTlmMjZhMC02N2EyLTdkOGUtODEwMy1jNWM1MGRmZThhNjcSI29yZ2FuaXphdGlvbnMvNjEwOTkyMzMyOTkvc291cmNlcy8t . This command is authenticated as amarabenkalu@gmail.com which is the active account specified by the [core/account] property.
+- '@type': type.googleapis.com/google.rpc.ErrorInfo
+  domain: securitycenter.googleapis.com
+  metadata:
+    error_info_id: CiQwMTlmMjZhMC02N2EyLTdkOGUtODEwMy1jNWM1MGRmZThhNjcSI29yZ2FuaXphdGlvbnMvNjEwOTkyMzMyOTkvc291cmNlcy8t
+    permission: securitycenter.findings.list
+    resource: organizations/61099233299/sources/-
+    troubleshooter_url: https://console.cloud.google.com/iam-admin/troubleshooter;errorId=CiQwMTlmMjZhMC02N2EyLTdkOGUtODEwMy1jNWM1MGRmZThhNjcSI29yZ2FuaXphdGlvbnMvNjEwOTkyMzMyOTkvc291cmNlcy8t
+  reason: IAM_PERMISSION_DENIED
+[]
