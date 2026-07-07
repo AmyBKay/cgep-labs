@@ -1,0 +1,103 @@
+{
+  "component-definition": {
+    "uuid": "ab331680-5f7a-4900-9c83-a96456c78349",
+    "metadata": {
+      "title": "compliant-s3 module v1",
+      "last-modified": "2026-04-26T18:00:00.000000+00:00",
+      "version": "1.0.0",
+      "oscal-version": "1.1.3",
+      "parties": [
+        {
+          "uuid": "c3a37851-7c78-4896-9020-666374d9a007",
+          "type": "organization",
+          "name": "Your organization"
+        }
+      ]
+    },
+    "components": [
+      {
+        "uuid": "b80df413-e1a5-4c94-a3dd-47f98d7fd362",
+        "type": "software",
+        "title": "compliant-s3",
+        "description": "Reusable Terraform pattern for an AWS S3 primary bucket plus a dedicated access-log bucket. Hardcodes server-side encryption, versioning, public access block, access logging, and required compliance tags.",
+        "purpose": "Provide a compliant-by-default S3 primitive that any team can adopt with three lines of consumer Terraform.",
+        "responsible-roles": [
+          { "role-id": "provider", "party-uuids": ["c3a37851-7c78-4896-9020-666374d9a007"] }
+        ],
+        "control-implementations": [
+          {
+            "uuid": "ad4cc87c-d8f5-4f67-b038-8e12a63d183b",
+            "source": "https://raw.githubusercontent.com/usnistgov/oscal-content/main/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json",
+            "description": "Implementation of NIST 800-53 Rev 5 controls satisfied by this module.",
+            "implemented-requirements": [
+              {
+                "uuid": "06d8a10d-6b17-4f90-8fc1-9d1fec2334e2",
+                "control-id": "sc-28",
+                "description": "AES-256 server-side encryption is enforced via aws_s3_bucket_server_side_encryption_configuration. Hardcoded; consumers cannot override.",
+                "props": [
+                  { "name": "implementation-status", "value": "implemented" },
+                  { "name": "terraform-resource", "value": "aws_s3_bucket_server_side_encryption_configuration.primary" }
+                ],
+                "links": [
+                  {
+                    "rel": "evidence",
+                    "href": "s3://EVIDENCE_VAULT/runs/LATEST/evidence-LATEST.tar.gz",
+                    "text": "Signed pipeline bundle containing terraform plan.json."
+                  }
+                ]
+              },
+              {
+                "uuid": "96902ba8-2f11-4055-b519-1f6165833d3d",
+                "control-id": "au-3",
+                "description": "Access logging is enabled via aws_s3_bucket_logging, delivering audit records for all object-level requests on the primary bucket to a dedicated access-log bucket.",
+                "props": [
+                  { "name": "implementation-status", "value": "implemented" },
+                  { "name": "terraform-resource", "value": "aws_s3_bucket_logging.vault" }
+                ],
+                "links": [
+                  {
+                    "rel": "evidence",
+                    "href": "s3://EVIDENCE_VAULT/runs/LATEST/evidence-LATEST.tar.gz",
+                    "text": "Signed pipeline bundle containing terraform plan.json."
+                  }
+                ]
+              },
+              {
+                "uuid": "78648539-5b3e-44f1-9209-0cb59b60466b",
+                "control-id": "ac-3",
+                "description": "Public access is blocked at the bucket level via aws_s3_bucket_public_access_block, enforcing that no ACL, policy, or cross-account grant can expose objects publicly. Hardcoded; consumers cannot override.",
+                "props": [
+                  { "name": "implementation-status", "value": "implemented" },
+                  { "name": "terraform-resource", "value": "aws_s3_bucket_public_access_block.vault" }
+                ],
+                "links": [
+                  {
+                    "rel": "evidence",
+                    "href": "s3://EVIDENCE_VAULT/runs/LATEST/evidence-LATEST.tar.gz",
+                    "text": "Signed pipeline bundle containing terraform plan.json."
+                  }
+                ]
+              },
+              {
+                "uuid": "e62f7ceb-6641-4684-881a-4a0844b6033e",
+                "control-id": "cm-6",
+                "description": "Required compliance configuration tags (Project, Environment, ManagedBy, ComplianceScope) are enforced on every resource via the provider's default_tags block, ensuring consistent baseline configuration settings across all deployments of this module.",
+                "props": [
+                  { "name": "implementation-status", "value": "implemented" },
+                  { "name": "terraform-resource", "value": "provider.aws.default_tags" }
+                ],
+                "links": [
+                  {
+                    "rel": "evidence",
+                    "href": "s3://EVIDENCE_VAULT/runs/LATEST/evidence-LATEST.tar.gz",
+                    "text": "Signed pipeline bundle containing terraform plan.json."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
