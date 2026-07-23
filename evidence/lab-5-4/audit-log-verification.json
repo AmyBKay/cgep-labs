@@ -1,0 +1,52 @@
+[
+  {
+    "insertId": "yz1ofbeu1ts5",
+    "logName": "projects/cgep-lab-500208/logs/cloudaudit.googleapis.com%2Fdata_access",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "authenticationInfo": {
+        "oauthInfo": {
+          "oauthClientId": "32555940559.apps.googleusercontent.com"
+        },
+        "principalEmail": "amarabenkalu@gmail.com"
+      },
+      "authorizationInfo": [
+        {
+          "granted": true,
+          "permission": "storage.objects.list",
+          "resource": "projects/_/buckets/cgep-lab-dev-dev-data-aok18b",
+          "resourceAttributes": {}
+        }
+      ],
+      "methodName": "storage.objects.list",
+      "requestMetadata": {
+        "callerIp": "2605:59c0:4c9:ed0c:1cf2:de26:4c25:f1ba",
+        "callerSuppliedUserAgent": "google-cloud-sdk gcloud/574.0.0 command/gcloud.storage.ls invocation-id/8292d88a9b534f6cbbbaa8ab4a6f552d environment/None environment-version/None client-os/WINDOWS client-os-ver/10.0.26200 client-pltf-arch/x86_64 interactive/True from-script/False python/3.14.5 term/xterm  (Windows NT 10.0.26200),gzip(gfe)",
+        "destinationAttributes": {},
+        "requestAttributes": {
+          "auth": {},
+          "time": "2026-07-03T05:56:12.021864270Z"
+        }
+      },
+      "resourceLocation": {
+        "currentLocations": [
+          "us-central1"
+        ]
+      },
+      "resourceName": "projects/_/buckets/cgep-lab-dev-dev-data-aok18b",
+      "serviceName": "storage.googleapis.com",
+      "status": {}
+    },
+    "receiveTimestamp": "2026-07-03T05:56:12.283452021Z",
+    "resource": {
+      "labels": {
+        "bucket_name": "cgep-lab-dev-dev-data-aok18b",
+        "location": "us-central1",
+        "project_id": "cgep-lab-500208"
+      },
+      "type": "gcs_bucket"
+    },
+    "severity": "INFO",
+    "timestamp": "2026-07-03T05:56:12.009105171Z"
+  }
+]
