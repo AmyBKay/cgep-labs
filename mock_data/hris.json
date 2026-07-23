@@ -1,0 +1,122 @@
+[
+  {
+    "employee_id": "EMP-001",
+    "name": "Joshua Wood",
+    "status": "active",
+    "termination_date": null
+  },
+  {
+    "employee_id": "EMP-002",
+    "name": "Lori Jones",
+    "status": "active",
+    "termination_date": null
+  },
+  {
+    "employee_id": "EMP-003",
+    "name": "Ryan Green",
+    "status": "active",
+    "termination_date": null
+  },
+  {
+    "employee_id": "EMP-004",
+    "name": "Zachary Ruiz",
+    "status": "active",
+    "termination_date": null
+  },
+  {
+    "employee_id": "EMP-005",
+    "name": "Karen Fowler",
+    "status": "active",
+    "termination_date": null
+  },
+  {
+    "employee_id": "EMP-006",
+    "name": "Mark Parrish",
+    "status": "terminated",
+    "termination_date": "2026-07-21T00:00:00"
+  },
+  {
+    "employee_id": "EMP-007",
+    "name": "Natalie Powers",
+    "status": "active",
+    "termination_date": null
+  },
+  {
+    "employee_id": "EMP-008",
+    "name": "Peter Garza",
+    "status": "active",
+    "termination_date": null
+  },
+  {
+    "employee_id": "EMP-009",
+    "name": "Andre Glenn",
+    "status": "active",
+    "termination_date": null
+  },
+  {
+    "employee_id": "EMP-010",
+    "name": "Nathan Koch",
+    "status": "terminated",
+    "termination_date": "2026-06-06T00:00:00"
+  },
+  {
+    "employee_id": "EMP-011",
+    "name": "Tammy Foster",
+    "status": "active",
+    "termination_date": null
+  },
+  {
+    "employee_id": "EMP-012",
+    "name": "Jill Walls",
+    "status": "active",
+    "termination_date": null
+  },
+  {
+    "employee_id": "EMP-013",
+    "name": "Anne Taylor",
+    "status": "active",
+    "termination_date": null
+  },
+  {
+    "employee_id": "EMP-014",
+    "name": "Vincent Graham",
+    "status": "active",
+    "termination_date": null
+  },
+  {
+    "employee_id": "EMP-015",
+    "name": "Elizabeth Hunter",
+    "status": "terminated",
+    "termination_date": "2026-06-11T00:00:00"
+  },
+  {
+    "employee_id": "EMP-016",
+    "name": "Gregory Richards",
+    "status": "terminated",
+    "termination_date": "2026-05-23T00:00:00"
+  },
+  {
+    "employee_id": "EMP-017",
+    "name": "Sue Fleming",
+    "status": "active",
+    "termination_date": null
+  },
+  {
+    "employee_id": "EMP-018",
+    "name": "Selena Ritter",
+    "status": "active",
+    "termination_date": null
+  },
+  {
+    "employee_id": "EMP-019",
+    "name": "Carla Valencia",
+    "status": "active",
+    "termination_date": null
+  },
+  {
+    "employee_id": "EMP-020",
+    "name": "Summer Carroll",
+    "status": "terminated",
+    "termination_date": "2026-06-03T00:00:00"
+  }
+]

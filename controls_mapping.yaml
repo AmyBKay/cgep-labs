@@ -1,0 +1,28 @@
+controls:
+  - control_id: AC-01
+    title: "MFA Enforced for Privileged Cloud Users"
+    description: "All IAM users with admin or data-access privileges must have MFA enabled."
+    frameworks:
+      soc2: "CC6.1 - Logical Access Controls"
+      iso27001: "A.9.4.2 - Secure log-on procedures"
+
+  - control_id: AC-02
+    title: "No Publicly Exposed Storage Buckets"
+    description: "Cloud storage buckets containing company or customer data must not be publicly readable."
+    frameworks:
+      soc2: "CC6.6 - Logical and Physical Access Controls"
+      iso27001: "A.13.1.3 - Segregation in networks"
+
+  - control_id: AC-03
+    title: "Timely Access Revocation for Terminated Employees"
+    description: "Access to sensitive data stores must be revoked within 24 hours of termination."
+    frameworks:
+      soc2: "CC6.2 - Prior to Issuing System Credentials"
+      iso27001: "A.9.2.6 - Removal or adjustment of access rights"
+
+  - control_id: AC-04
+    title: "Quarterly Access Review of Sensitive Data Store"
+    description: "Access to the sensitive data store must be reviewed at least every 90 days."
+    frameworks:
+      soc2: "CC6.3 - Access Reviews"
+      iso27001: "A.9.2.5 - Review of user access rights"
